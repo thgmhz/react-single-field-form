@@ -9,3 +9,19 @@
   height: auto;
   transition: none;
 }
+
+.spanLabel {
+  display: block;
+  overflow: hidden;
+}
+
+.label {
+  display: block;
+  transition: transform 0.4s;
+  transform: translateY(-100%);
+}
+
+.current .label {
+  transition: none;
+  transform: translateY(0);
+}

@@ -2,13 +2,19 @@ import React from 'react'
 import classnames from 'classnames'
 import styles from './Input.css'
 
-const Input = ({ isCurrent }) => {
+const Input = ({
+  labelText,
+  isCurrent,
+}) => {
   const wrapperClasses = classnames(styles.wrapper, {
     [styles.current]: isCurrent,
   })
 
   return (
-    <div className={wrapperClasses}>    
+    <div className={wrapperClasses}>
+      <span className={styles.spanLabel}>
+        <label className={styles.label}>{labelText}</label>
+      </span>
       <input type="text" />
     </div>
   )
