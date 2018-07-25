@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import './Form.css'
 
 const Form = ({ children }) => {
   const childrenWithProps = React.Children.map(children, (child, index) => {
@@ -15,7 +16,7 @@ const Form = ({ children }) => {
 
   return (
     <Fragment>
-      <form>
+      <form class="Form-wrapper">
         {childrenWithProps}
       </form>
     </Fragment>
