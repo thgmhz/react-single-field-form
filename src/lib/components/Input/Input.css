@@ -4,6 +4,10 @@
   transition: visibility 0s 0.4s, height 0s 0.4s;
 }
 
+.input {
+  width: 100%;
+}
+
 .current {
   visibility: visible;
   height: auto;

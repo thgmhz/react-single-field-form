@@ -15,7 +15,7 @@ const Input = ({
       <span className={styles.spanLabel}>
         <label className={styles.label}>{labelText}</label>
       </span>
-      <input type="text" />
+      <input type="text" className={styles.input} />
     </div>
   )
 }

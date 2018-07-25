@@ -1,9 +1,11 @@
-.wrapper {
+.progressBar, 
+.barWrapper {
   width: 100%;
 }
 
 .bar {
-  width: 10%;
+  width: 0;
   height: 3px;
   background-color: #000;
+  transition: width 0.4s ease-in-out;
 }
