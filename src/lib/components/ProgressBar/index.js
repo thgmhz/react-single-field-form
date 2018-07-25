@@ -1,10 +1,10 @@
 import React from 'react'
-import './ProgressBar.css'
+import styles from './ProgressBar.css'
 
 const ProgressBar = ({ isCurrent }) => {
   return (
-    <div className="ProgressBar-wrapper">
-      <div className="ProgressBar-bar"></div>
+    <div className={styles.wrapper}>
+      <div className={styles.bar}></div>
     </div>
   )
 }

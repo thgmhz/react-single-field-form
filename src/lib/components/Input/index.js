@@ -1,10 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
-import './Input.css'
+import styles from './Input.css'
 
 const Input = ({ isCurrent }) => {
-  const wrapperClasses = classnames('Input-wrapper', {
-    'current': isCurrent,
+  const wrapperClasses = classnames(styles.wrapper, {
+    [styles.current]: isCurrent,
   })
 
   return (

@@ -1,8 +1,8 @@
-.ProgressBar-wrapper {
+.wrapper {
   width: 100%;
 }
 
-.ProgressBar-bar {
+.bar {
   width: 10%;
   height: 3px;
   background-color: #000;

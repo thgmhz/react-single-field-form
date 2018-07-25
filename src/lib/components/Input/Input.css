@@ -1,10 +1,10 @@
-.Input-wrapper {
+.wrapper {
   visibility: hidden;
   height: 0;
   transition: visibility 0s 0.4s, height 0s 0.4s;
 }
 
-.Input-wrapper.current {
+.current {
   visibility: visible;
   height: auto;
   transition: none;
