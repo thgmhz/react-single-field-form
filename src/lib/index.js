@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
-import classnames from 'classnames'
-import './Input.css'
+import Input from './components/Input'
 
 const Form = ({ children }) => {
   const childrenWithProps = React.Children.map(children, (child, index) => {
@@ -21,18 +20,6 @@ const Form = ({ children }) => {
         { childrenWithProps }
       </form>      
     </Fragment>
-  )
-}
-
-const Input = ({ isCurrent }) => {
-  const wrapperClasses = classnames('Input-wrapper', {
-    'current': isCurrent,
-  })
-
-  return (
-    <div className={wrapperClasses}>    
-      <input type="text" />
-    </div>
   )
 }
 
