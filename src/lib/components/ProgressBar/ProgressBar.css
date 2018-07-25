@@ -1,0 +1,9 @@
+.ProgressBar-wrapper {
+  width: 100%;
+}
+
+.ProgressBar-bar {
+  width: 10%;
+  height: 3px;
+  background-color: #000;
+}
