@@ -1,36 +1,93 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styles from './Form.css'
 
+const inputFields = ['Input']
+
+const checkIfIsInputField = child => inputFields.includes(child.type.name)
+
+const getTotalInputs = {
+  Array: children => children.filter(checkIfIsInputField).length,
+  Object: () => 1
+}
 class Form extends Component {
-  state = {
-    currentInput: 0,
-    totalInputs: 0,
+  constructor (props) {
+    super(props)
+    
+    const { children } = props
+    const childrenConstructor = children.constructor.name
+    
+    if (!children) {
+      throw new Error('The "Form" must have children.')
+    }
+
+    const totalInputs = getTotalInputs[childrenConstructor](children)
+
+    if (!totalInputs) {
+      throw new Error('The "Form" must have input fields.')
+    }
+
+    this.state = {
+      formData: {},
+      totalInputs,
+      currentInput: 0,
+    }
   }
 
-  childsWhoAreInputs = ['Input']
+  onInputKeyPress (e) {
+    if (e.key === 'Enter') {
+      const { formData, currentInput, totalInputs } = this.state
+    
+      const inputName = e.target.name
+      const inputValue = e.target.value
+      const isLastInputField = currentInput >= totalInputs - 1
+    
+      if (isLastInputField) {
+        // submit form
+      }
 
-  componentWillMount () {
-    const { children } = this.props
+      const newCurrentInput = isLastInputField
+        ? totalInputs
+        : currentInput + 1
 
-    const inputs = children.filter(child => 
-      this.childsWhoAreInputs.includes(child.type.name)
-    )
+      this.setState({
+        currentInput: newCurrentInput,
+        formData: {
+          ...formData,
+          [inputName]: inputValue,
+        }
+      })
 
-    this.setState({ totalInputs: inputs.length })
+    }
   }
 
   buildChildrens = (child, index) => {
     const { currentInput, totalInputs } = this.state
+    const componentName = child.type.name
 
-    const isCurrent = index === currentInput
-      ? true
-      : false
+    const isInputField = checkIfIsInputField(child)
+    const indexIsEqualCurrentInput = (index === currentInput)
+    const isLastInputField = (
+      (index === currentInput - 1) && 
+      (currentInput >= totalInputs)
+    )
+    
+    const isVisible = (
+      isInputField && 
+      (indexIsEqualCurrentInput || isLastInputField)
+    ) ? true : false
 
-    return React.cloneElement(child, {
-      isCurrent,
-      totalInputs,
-      currentInput,
-    })
+    const childProps = {
+      Input: {
+        isVisible,
+        onKeyPress: (e) => this.onInputKeyPress(e),
+      },
+      ProgressBar: {
+        currentInput,
+        totalInputs,
+      },
+    }
+
+    return React.cloneElement(child, childProps[componentName])
   }
 
   render () {
@@ -38,11 +95,9 @@ class Form extends Component {
     const childrenWithProps = React.Children.map(children, this.buildChildrens)
 
     return (
-      <Fragment>
-        <form className={styles.wrapper}>
-          {childrenWithProps}
-        </form>
-      </Fragment>
+      <form className={styles.wrapper}>
+        {childrenWithProps}
+      </form>
     )
   }
 }

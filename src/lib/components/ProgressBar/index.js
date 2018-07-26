@@ -1,37 +1,40 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styles from './ProgressBar.css'
 
-const ProgressBar = ({
-  isCurrent,
-  currentInput,
-  totalInputs,
-  customStyles,
-}) => {
-  const barWidth = ((totalInputs / 100) * currentInput)
-  const counter = `${currentInput + 1} / ${totalInputs}`
+class ProgressBar extends Component {
+  render () {
+    const {
+      currentInput,
+      totalInputs,
+      customStyles,
+    } = this.props
 
-  return (
-    <div className={styles.progressBar}>
-      <div
-        className={styles.barWrapper}
-        style={{ ...customStyles }}
-      >
+    const barWidth = ((currentInput / totalInputs) * 100)
+    const counter = `${currentInput} / ${totalInputs}`
+    
+    return (
+      <div className={styles.progressBar}>
         <div
-          className={styles.bar}
-          style={{
-            width: barWidth,
-            ...customStyles.bar,
-          }}
-        ></div>      
+          className={styles.barWrapper}
+          style={{ ...customStyles }}
+        >
+          <div
+            className={styles.bar}
+            style={{
+              width: `${barWidth}%`,
+              ...customStyles.bar,
+            }}
+          ></div>      
+        </div>
+        <div
+          className={styles.counter}
+          style={customStyles.counter}
+        >
+          {counter}
+        </div>
       </div>
-      <div
-        className={styles.counter}
-        style={customStyles.counter}
-      >
-        {counter}
-      </div>
-    </div>
-  )
+    )
+  }
 }
 
 ProgressBar.defaultProps = {

@@ -1,8 +1,6 @@
 import React from 'react'
 import { Form, Input, ProgressBar } from '../lib'
 
-
-
 const progressBarStyles = {
   backgroundColor: '#ddd',
   bar: {
@@ -16,8 +14,9 @@ const progressBarStyles = {
 
 const App = () => (
   <Form>
-    <Input labelText="What's your name?" />
-    <Input labelText="Where do you live?" />
+    <Input name="name" labelText="What's your name?" />
+    <Input name="whereLive" labelText="Where do you live?" />
+    <Input name="job" labelText="What is your job?" />
     <ProgressBar
       customStyles={progressBarStyles}
     />

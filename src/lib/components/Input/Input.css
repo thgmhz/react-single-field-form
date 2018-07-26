@@ -1,31 +1,44 @@
-.wrapper {
+.input {
   visibility: hidden;
   height: 0;
-  transition: visibility 0s 0.4s, height 0s 0.4s;
 }
 
-.input {
+.field {
   width: 100%;
+  display: block;
+  border: none;
+  background: transparent;
+  font-size: 1em;
+  line-height: 1;
+  opacity: 0;
+  outline: none;
+  transition: opacity 0.3s;
 }
 
-.current {
-  visibility: visible;
-  height: auto;
-  transition: none;
-}
-
-.spanLabel {
+.span {
   display: block;
   overflow: hidden;
 }
 
 .label {
   display: block;
-  transition: transform 0.4s;
-  transform: translateY(-100%);
 }
 
-.current .label {
+.visible {
+  visibility: visible;
+  height: auto;
   transition: none;
-  transform: translateY(0);
+}
+
+.visible .field {
+  opacity: 1;
+}
+
+.visible .label {
+	animation: moveUpFromDown 0.4s both;
+}
+
+@keyframes moveUpFromDown {
+	from { transform: translateY(100%); }
+	to { transform: translateY(0); }
 }
