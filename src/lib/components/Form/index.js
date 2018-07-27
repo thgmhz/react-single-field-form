@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
+
+import ProgressBar from '../ProgressBar'
 import styles from './Form.css'
 
-const inputFields = ['Input']
-
-const checkIfIsInputField = child => inputFields.includes(child.type.name)
-
-const getTotalInputs = {
-  Array: children => children.filter(checkIfIsInputField).length,
-  Object: () => 1
+const getTotalFields = {
+  'Array': children => children.length,
+  'Object': () => 1
 }
 class Form extends Component {
   constructor (props) {
@@ -20,37 +18,37 @@ class Form extends Component {
       throw new Error('The "Form" must have children.')
     }
 
-    const totalInputs = getTotalInputs[childrenConstructor](children)
+    const totalFields = getTotalFields[childrenConstructor](children)
 
-    if (!totalInputs) {
+    if (!totalFields) {
       throw new Error('The "Form" must have input fields.')
     }
 
     this.state = {
       formData: {},
-      totalInputs,
-      currentInput: 0,
+      totalFields,
+      currentField: 0,
     }
   }
 
   onInputKeyPress (e) {
     if (e.key === 'Enter') {
-      const { formData, currentInput, totalInputs } = this.state
+      const { formData, currentField, totalFields } = this.state
     
       const inputName = e.target.name
       const inputValue = e.target.value
-      const isLastInputField = currentInput >= totalInputs - 1
+      const isLastInputField = currentField >= totalFields - 1
     
       if (isLastInputField) {
         // submit form
       }
 
-      const newCurrentInput = isLastInputField
-        ? totalInputs
-        : currentInput + 1
+      const newcurrentField = isLastInputField
+        ? totalFields
+        : currentField + 1
 
       this.setState({
-        currentInput: newCurrentInput,
+        currentField: newcurrentField,
         formData: {
           ...formData,
           [inputName]: inputValue,
@@ -60,44 +58,55 @@ class Form extends Component {
     }
   }
 
-  buildChildrens = (child, index) => {
-    const { currentInput, totalInputs } = this.state
-    const componentName = child.type.name
+  buildFields = (field, index) => {
+    const { currentField, totalFields } = this.state
+    const componentName = field.type.name
 
-    const isInputField = checkIfIsInputField(child)
-    const indexIsEqualCurrentInput = (index === currentInput)
+    const indexIsEqualCurrentField = (index === currentField)
+
     const isLastInputField = (
-      (index === currentInput - 1) && 
-      (currentInput >= totalInputs)
+      (index === currentField - 1) &&
+      (currentField >= totalFields)
     )
-    
-    const isVisible = (
-      isInputField && 
-      (indexIsEqualCurrentInput || isLastInputField)
-    ) ? true : false
 
-    const childProps = {
+    const isVisible = (indexIsEqualCurrentField || isLastInputField)
+      ? true
+      : false
+
+    const fieldProps = {
       Input: {
         isVisible,
         onKeyPress: (e) => this.onInputKeyPress(e),
       },
-      ProgressBar: {
-        currentInput,
-        totalInputs,
-      },
+      Select: {}, //todo
+      Option: {}, //todo
+      Checkbox: {}, //todo
+      Textarea: {}, //todo
     }
 
-    return React.cloneElement(child, childProps[componentName])
+    return React.cloneElement(field, fieldProps[componentName])
   }
 
   render () {
-    const { children } = this.props    
-    const childrenWithProps = React.Children.map(children, this.buildChildrens)
+    const { currentField, totalFields } = this.state
+    const { children, enableProgressBar, customStyles } = this.props    
+    const fieldsWithProps = React.Children.map(children, this.buildFields)
+
+    const { progressBar } = customStyles
 
     return (
-      <form className={styles.wrapper}>
-        {childrenWithProps}
-      </form>
+      <React.Fragment>
+        <form className={styles.wrapper}>
+          {fieldsWithProps}
+          {
+            enableProgressBar && <ProgressBar 
+              currentField={currentField}
+              totalFields={totalFields}
+              customStyles={progressBar}
+            />
+          }
+        </form>
+      </React.Fragment>
     )
   }
 }

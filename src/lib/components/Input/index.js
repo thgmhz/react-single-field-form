@@ -40,7 +40,7 @@ class Input extends Component {
           name={name}
           className={styles.field}
           onKeyPress={onKeyPress}
-          />
+        />
       </div>
     )
   }

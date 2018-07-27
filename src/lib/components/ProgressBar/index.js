@@ -4,13 +4,13 @@ import styles from './ProgressBar.css'
 class ProgressBar extends Component {
   render () {
     const {
-      currentInput,
-      totalInputs,
+      currentField,
+      totalFields,
       customStyles,
     } = this.props
 
-    const barWidth = ((currentInput / totalInputs) * 100)
-    const counter = `${currentInput} / ${totalInputs}`
+    const barWidth = ((currentField / totalFields) * 100)
+    const counter = `${currentField} / ${totalFields}`
     
     return (
       <div className={styles.progressBar}>
@@ -38,7 +38,9 @@ class ProgressBar extends Component {
 }
 
 ProgressBar.defaultProps = {
-  style: {},
+  customStyles: {},
+  totalFields: 0,
+  currentField: 0,
 }
 
 export default ProgressBar
