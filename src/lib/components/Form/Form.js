@@ -52,18 +52,20 @@ class Form extends Component {
         ? totalFields
         : currentField + 1
 
-      const showFinalMessage = (finalMessage && isLastInputField)
-
       this.setState({
         currentField: newcurrentField,
         isInTransition: true,
-        showFinalMessage,
         formData: {
           ...formData,
           [inputName]: inputValue,
         },
       }, () => {
         if (isLastInputField && onSubmit) {
+          if (finalMessage) {
+            setTimeout(() => {
+              this.setState({ showFinalMessage: true })
+            }, 450)
+          }
           this.submitForm()
         }
       })
