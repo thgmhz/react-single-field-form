@@ -1,5 +1,6 @@
-.progressBar, 
-.barWrapper {
+.ProgressBar-wrapper, 
+.barWrapper {  
+  position: relative;
   width: 100%;
 }
 
@@ -8,4 +9,47 @@
   height: 3px;
   background-color: #000;
   transition: width 0.4s ease-in-out;
+}
+
+.counter {
+	position: absolute;
+	right: 0;
+	overflow: hidden;
+	margin: 0.4em 0;
+	width: 3em;
+	font-weight: 700;
+	font-size: 0.4em;
+}
+
+.counter:after{
+  position: absolute;
+	left: 50%;
+	content: '/';
+	opacity: 0.4;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+.ProgressBar-wrapper span {
+  float: right;
+	width: 40%;
+  text-align: center;
+}
+
+.counter .currentNumber {
+  float: left;
+}
+
+.counter .nextNumber {
+	position: absolute;
+	left: 0;
+}
+
+.isInTransition .currentNumber {
+	transition: transform 0.4s;
+	transform: translateY(-100%);
+}
+
+.isInTransition .nextNumber {
+	animation: moveUpFromDown 0.4s both;
 }

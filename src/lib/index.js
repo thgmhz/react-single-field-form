@@ -1,9 +1,8 @@
-import Form from './components/Form'
-import Input from './components/Input'
-import ProgressBar from './components/ProgressBar'
+import Form from './components/Form/Form'
+import Input from './components/Input/Input'
+import './index.css'
 
 export { 
   Form,
   Input,
-  ProgressBar,
 }
