@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import styles from './Input.css'
+import './Input.css'
 
 class Input extends Component {
   componentDidMount () {
@@ -25,20 +25,20 @@ class Input extends Component {
       onKeyPress,
     } = this.props
 
-    const inputClasses = classnames(styles.input, {
-      [styles.visible]: isVisible,
+    const inputClasses = classnames('Input-wrapper', {
+      'visible': isVisible,
     })
 
     return (
       <div className={inputClasses}>
-        <span className={styles.span}>
-          <label className={styles.label}>{labelText}</label>
+        <span>
+          <label>{labelText}</label>
         </span>
         <input
           ref={(input) => this.inputRef = input}
           type="text"
           name={name}
-          className={styles.field}
+          className="field"
           onKeyPress={onKeyPress}
         />
       </div>

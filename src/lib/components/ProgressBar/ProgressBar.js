@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import styles from './ProgressBar.css'
+import './ProgressBar.css'
 
 class ProgressBar extends Component {
   render () {
@@ -7,31 +7,40 @@ class ProgressBar extends Component {
       currentField,
       totalFields,
       customStyles,
+      isInTransition,
     } = this.props
-
+    
     const barWidth = ((currentField / totalFields) * 100)
-    const counter = `${currentField} / ${totalFields}`
     
     return (
-      <div className={styles.progressBar}>
+      <div className="ProgressBar-wrapper">
         <div
-          className={styles.barWrapper}
+          className="barWrapper"
           style={{ ...customStyles }}
         >
           <div
-            className={styles.bar}
+            className="bar"
             style={{
               width: `${barWidth}%`,
               ...customStyles.bar,
             }}
           ></div>      
         </div>
-        <div
-          className={styles.counter}
+        <span
+          className="counter"
           style={customStyles.counter}
         >
-          {counter}
-        </div>
+          <span className="currentNumber">
+            {
+              isInTransition ? currentField - 1 : currentField
+            }
+          </span>       
+          {
+            isInTransition && 
+            <span className="nextNumber">{currentField}</span>
+          }
+          <span className="totalNumber">{totalFields}</span>
+        </span>
       </div>
     )
   }

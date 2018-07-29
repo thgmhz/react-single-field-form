@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import classnames from 'classnames'
 
-import ProgressBar from '../ProgressBar'
-import styles from './Form.css'
+import ProgressBar from '../ProgressBar/ProgressBar'
+import './Form.css'
 
 const getTotalFields = {
   'Array': children => children.length,
@@ -28,6 +29,7 @@ class Form extends Component {
       formData: {},
       totalFields,
       currentField: 0,
+      isInTransition: false,
     }
   }
 
@@ -47,13 +49,18 @@ class Form extends Component {
         ? totalFields
         : currentField + 1
 
-      this.setState({
-        currentField: newcurrentField,
-        formData: {
-          ...formData,
-          [inputName]: inputValue,
-        }
-      })
+        this.setState({
+          currentField: newcurrentField,
+          isInTransition: true,
+          formData: {
+            ...formData,
+            [inputName]: inputValue,
+          }
+        })
+        
+      setTimeout(() => {
+        this.setState({ isInTransition: false })
+      }, 500)
 
     }
   }
@@ -88,20 +95,26 @@ class Form extends Component {
   }
 
   render () {
-    const { currentField, totalFields } = this.state
+    const { currentField, totalFields, isInTransition } = this.state
     const { children, enableProgressBar, customStyles } = this.props    
+    
     const fieldsWithProps = React.Children.map(children, this.buildFields)
 
     const { progressBar } = customStyles
 
+    const formClasses = classnames('Form-wrapper', {
+      'isInTransition': isInTransition,
+    })
+
     return (
       <React.Fragment>
-        <form className={styles.wrapper}>
+        <form className={formClasses}>
           {fieldsWithProps}
           {
             enableProgressBar && <ProgressBar 
               currentField={currentField}
               totalFields={totalFields}
+              isInTransition={isInTransition}
               customStyles={progressBar}
             />
           }
