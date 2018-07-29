@@ -30,6 +30,8 @@ const App = () => (
     <Input name="name" labelText="What's your name?" />
     <Input name="whereLive" labelText="Where do you live?" />
     <Input name="job" labelText="What is your job?" />
+    <Input type="email" name="email" labelText="Your e-mail" />
+    <Input type="number" name="age" labelText="Your age" />
   </Form>
 )
 

@@ -21,6 +21,7 @@ class Input extends Component {
   render () {
     const {
       name,
+      type,
       labelText,
       isVisible,
       onKeyPress,
@@ -40,7 +41,7 @@ class Input extends Component {
         <input
           id={name}
           ref={(input) => { this.inputRef = input }}
-          type="text"
+          type={type}
           name={name}
           className="field"
           onKeyPress={onKeyPress}
@@ -52,6 +53,7 @@ class Input extends Component {
 
 Input.propTypes = {
   name: PropTypes.string.isRequired,
+  type: PropTypes.string,
   labelText: PropTypes.string,
   isVisible: PropTypes.bool,
   onKeyPress: PropTypes.func.isRequired,
@@ -59,6 +61,7 @@ Input.propTypes = {
 
 Input.defaultProps = {
   labelText: '',
+  type: 'text',
   isVisible: true,
 }
 
