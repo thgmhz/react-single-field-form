@@ -145,30 +145,28 @@ class Form extends Component {
     })
 
     return (
-      <React.Fragment>
-        <form
-          method={method || 'get'}
-          action={action}
-          className={formClasses}
-          onSubmit={this.handleFormSubmit}
-          ref={(form) => { this.formRef = form }}
-        >
-          {
-            showFinalMessage
-              ? this.buildFinalMessage(finalMessage)
-              : fieldsWithProps
-          }
-          {
-            enableProgressBar && !showFinalMessage &&
-            <ProgressBar
-              currentField={currentField}
-              totalFields={totalFields}
-              isInTransition={isInTransition}
-              customStyles={progressBar}
-            />
-          }
-        </form>
-      </React.Fragment>
+      <form
+        method={method || 'get'}
+        action={action}
+        className={formClasses}
+        onSubmit={this.handleFormSubmit}
+        ref={(form) => { this.formRef = form }}
+      >
+        {
+          showFinalMessage
+            ? this.buildFinalMessage(finalMessage)
+            : fieldsWithProps
+        }
+        {
+          enableProgressBar && !showFinalMessage &&
+          <ProgressBar
+            currentField={currentField}
+            totalFields={totalFields}
+            isInTransition={isInTransition}
+            customStyles={progressBar}
+          />
+        }
+      </form>
     )
   }
 }
