@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
 import ProgressBar from '../ProgressBar/ProgressBar'
 import './Form.css'
 
 const getTotalFields = {
-  'Array': children => children.length,
-  'Object': () => 1
+  Array: children => children.length,
+  Object: () => 1,
 }
 class Form extends Component {
   constructor (props) {
     super(props)
-    
+
     const { children } = props
     const childrenConstructor = children.constructor.name
-    
+
     if (!children) {
       throw new Error('The "Form" must have children.')
     }
@@ -33,18 +34,6 @@ class Form extends Component {
     }
   }
 
-  submitForm () {
-    const submitEvent = new Event('submit')
-    this.formRef.dispatchEvent(submitEvent)
-  }
-
-  handleFormSubmit = event => {
-    const { formData } = this.state
-    const { onSubmit } = this.props
-
-    onSubmit({ event, formData })
-  }
-
   onInputKeyPress (e) {
     const { onSubmit, finalMessage } = this.props
 
@@ -54,7 +43,7 @@ class Form extends Component {
         currentField,
         totalFields,
       } = this.state
-    
+
       const inputName = e.target.name
       const inputValue = e.target.value
       const isLastInputField = currentField >= totalFields - 1
@@ -64,8 +53,6 @@ class Form extends Component {
         : currentField + 1
 
       const showFinalMessage = (finalMessage && isLastInputField)
-        ? true
-        : false
 
       this.setState({
         currentField: newcurrentField,
@@ -74,17 +61,29 @@ class Form extends Component {
         formData: {
           ...formData,
           [inputName]: inputValue,
-        }
+        },
       }, () => {
         if (isLastInputField && onSubmit) {
           this.submitForm()
         }
       })
-        
+
       setTimeout(() => {
         this.setState({ isInTransition: false })
       }, 500)
     }
+  }
+
+  handleFormSubmit = (event) => {
+    const { formData } = this.state
+    const { onSubmit } = this.props
+
+    onSubmit({ event, formData })
+  }
+
+  submitForm () {
+    const submitEvent = new Event('submit')
+    this.formRef.dispatchEvent(submitEvent)
   }
 
   buildFields = (field, index) => {
@@ -99,18 +98,16 @@ class Form extends Component {
     )
 
     const isVisible = (indexIsEqualCurrentField || isLastInputField)
-      ? true
-      : false
 
     const fieldProps = {
       Input: {
         isVisible,
-        onKeyPress: (e) => this.onInputKeyPress(e),
+        onKeyPress: e => this.onInputKeyPress(e),
       },
-      Select: {}, //todo
-      Option: {}, //todo
-      Checkbox: {}, //todo
-      Textarea: {}, //todo
+      Select: {}, // todo
+      Option: {}, // todo
+      Checkbox: {}, // todo
+      Textarea: {}, // todo
     }
 
     return React.cloneElement(field, fieldProps[componentName])
@@ -135,14 +132,14 @@ class Form extends Component {
       enableProgressBar,
       finalMessage,
       customStyles,
-    } = this.props    
-    
+    } = this.props
+
     const fieldsWithProps = React.Children.map(children, this.buildFields)
 
     const { progressBar } = customStyles
 
     const formClasses = classnames('Form-wrapper', {
-      'isInTransition': isInTransition,
+      isInTransition,
     })
 
     return (
@@ -152,16 +149,16 @@ class Form extends Component {
           action={action}
           className={formClasses}
           onSubmit={this.handleFormSubmit}
-          ref={(form) => this.formRef = form}
+          ref={(form) => { this.formRef = form }}
         >
           {
-            showFinalMessage 
+            showFinalMessage
               ? this.buildFinalMessage(finalMessage)
               : fieldsWithProps
           }
           {
             enableProgressBar && !showFinalMessage &&
-            <ProgressBar 
+            <ProgressBar
               currentField={currentField}
               totalFields={totalFields}
               isInTransition={isInTransition}
@@ -172,6 +169,30 @@ class Form extends Component {
       </React.Fragment>
     )
   }
+}
+
+Form.propTypes = {
+  children: PropTypes.element.isRequired,
+  method: PropTypes.string,
+  action: PropTypes.string,
+  enableProgressBar: PropTypes.bool,
+  finalMessage: PropTypes.string,
+  onSubmit: PropTypes.func,
+  customStyles: PropTypes.shape({
+    progressBar: PropTypes.shape({
+      bar: PropTypes.object,
+      counter: PropTypes.object,
+    }),
+  }),
+}
+
+Form.defaultProps = {
+  method: 'get',
+  action: '',
+  enableProgressBar: true,
+  finalMessage: '',
+  onSubmit: null,
+  customStyles: {},
 }
 
 export default Form

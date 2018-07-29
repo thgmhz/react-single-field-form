@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Input } from '../lib'
 
-const customStyles = { 
+const customStyles = {
   progressBar: {
     backgroundColor: '#ddd',
     bar: {
@@ -24,7 +24,7 @@ const App = () => (
   <Form
     enableProgressBar
     customStyles={customStyles}
-    finalMessage={'Thanks for the answers =)'}
+    finalMessage="Thanks for the answers =)"
     onSubmit={onSubmit}
   >
     <Input name="name" labelText="What's your name?" />

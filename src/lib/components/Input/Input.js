@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import './Input.css'
 
@@ -13,8 +14,8 @@ class Input extends Component {
 
   setInputFocus () {
     const { isVisible } = this.props
-    
-    isVisible && this.inputRef.focus()
+
+    if (isVisible) this.inputRef.focus()
   }
 
   render () {
@@ -26,16 +27,19 @@ class Input extends Component {
     } = this.props
 
     const inputClasses = classnames('Input-wrapper', {
-      'visible': isVisible,
+      visible: isVisible,
     })
 
     return (
       <div className={inputClasses}>
         <span>
-          <label>{labelText}</label>
+          <label htmlFor={name}>
+            {labelText}
+          </label>
         </span>
         <input
-          ref={(input) => this.inputRef = input}
+          id={name}
+          ref={(input) => { this.inputRef = input }}
           type="text"
           name={name}
           className="field"
@@ -44,6 +48,18 @@ class Input extends Component {
       </div>
     )
   }
+}
+
+Input.propTypes = {
+  name: PropTypes.string.isRequired,
+  labelText: PropTypes.string,
+  isVisible: PropTypes.bool,
+  onKeyPress: PropTypes.func.isRequired,
+}
+
+Input.defaultProps = {
+  labelText: '',
+  isVisible: true,
 }
 
 export default Input
