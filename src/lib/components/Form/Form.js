@@ -33,35 +33,57 @@ class Form extends Component {
     }
   }
 
+  submitForm () {
+    const submitEvent = new Event('submit')
+    this.formRef.dispatchEvent(submitEvent)
+  }
+
+  handleFormSubmit = event => {
+    const { formData } = this.state
+    const { onSubmit } = this.props
+
+    onSubmit({ event, formData })
+  }
+
   onInputKeyPress (e) {
+    const { onSubmit, finalMessage } = this.props
+
     if (e.key === 'Enter') {
-      const { formData, currentField, totalFields } = this.state
+      const {
+        formData,
+        currentField,
+        totalFields,
+      } = this.state
     
       const inputName = e.target.name
       const inputValue = e.target.value
       const isLastInputField = currentField >= totalFields - 1
-    
-      if (isLastInputField) {
-        // submit form
-      }
 
       const newcurrentField = isLastInputField
         ? totalFields
         : currentField + 1
 
-        this.setState({
-          currentField: newcurrentField,
-          isInTransition: true,
-          formData: {
-            ...formData,
-            [inputName]: inputValue,
-          }
-        })
+      const showFinalMessage = (finalMessage && isLastInputField)
+        ? true
+        : false
+
+      this.setState({
+        currentField: newcurrentField,
+        isInTransition: true,
+        showFinalMessage,
+        formData: {
+          ...formData,
+          [inputName]: inputValue,
+        }
+      }, () => {
+        if (isLastInputField && onSubmit) {
+          this.submitForm()
+        }
+      })
         
       setTimeout(() => {
         this.setState({ isInTransition: false })
       }, 500)
-
     }
   }
 
@@ -94,9 +116,26 @@ class Form extends Component {
     return React.cloneElement(field, fieldProps[componentName])
   }
 
+  buildFinalMessage = finalMessage => (
+    <span>{finalMessage}</span>
+  )
+
   render () {
-    const { currentField, totalFields, isInTransition } = this.state
-    const { children, enableProgressBar, customStyles } = this.props    
+    const {
+      currentField,
+      totalFields,
+      isInTransition,
+      showFinalMessage,
+    } = this.state
+
+    const {
+      children,
+      method,
+      action,
+      enableProgressBar,
+      finalMessage,
+      customStyles,
+    } = this.props    
     
     const fieldsWithProps = React.Children.map(children, this.buildFields)
 
@@ -108,10 +147,21 @@ class Form extends Component {
 
     return (
       <React.Fragment>
-        <form className={formClasses}>
-          {fieldsWithProps}
+        <form
+          method={method || 'get'}
+          action={action}
+          className={formClasses}
+          onSubmit={this.handleFormSubmit}
+          ref={(form) => this.formRef = form}
+        >
           {
-            enableProgressBar && <ProgressBar 
+            showFinalMessage 
+              ? this.buildFinalMessage(finalMessage)
+              : fieldsWithProps
+          }
+          {
+            enableProgressBar && !showFinalMessage &&
+            <ProgressBar 
               currentField={currentField}
               totalFields={totalFields}
               isInTransition={isInTransition}

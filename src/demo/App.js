@@ -14,10 +14,18 @@ const customStyles = {
   },
 }
 
+const onSubmit = ({ event, formData }) => {
+  event.preventDefault()
+  console.log('event', event)
+  console.log('formData', formData)
+}
+
 const App = () => (
   <Form
     enableProgressBar
     customStyles={customStyles}
+    finalMessage={'Thanks for the answers =)'}
+    onSubmit={onSubmit}
   >
     <Input name="name" labelText="What's your name?" />
     <Input name="whereLive" labelText="Where do you live?" />
