@@ -52,9 +52,11 @@ class Form extends Component {
         ? totalFields
         : currentField + 1
 
+      const isInTransition = !isLastInputField
+
       this.setState({
         currentField: newcurrentField,
-        isInTransition: true,
+        isInTransition,
         formData: {
           ...formData,
           [inputName]: inputValue,
