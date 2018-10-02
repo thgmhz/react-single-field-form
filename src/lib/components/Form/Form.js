@@ -9,6 +9,7 @@ const getTotalFields = {
   Array: children => children.length,
   Object: () => 1,
 }
+
 class Form extends Component {
   constructor (props) {
     super(props)
@@ -108,10 +109,13 @@ class Form extends Component {
         isVisible,
         onKeyPress: e => this.onInputKeyPress(e),
       },
-      Select: {}, // todo
-      Option: {}, // todo
-      Checkbox: {}, // todo
-      Textarea: {}, // todo
+      Select: {},
+      Option: {},
+      Checkbox: {},
+      Textarea: {
+        isVisible,
+        onKeyPress: e => this.onInputKeyPress(e),
+      },
     }
 
     return React.cloneElement(field, fieldProps[componentName])

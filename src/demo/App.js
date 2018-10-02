@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input } from '../lib'
+import { Form, Input, Textarea } from '../lib'
 
 const customStyles = {
   progressBar: {
@@ -32,6 +32,7 @@ const App = () => (
     <Input name="job" labelText="What is your job?" />
     <Input type="email" name="email" labelText="Your e-mail" />
     <Input type="number" name="age" labelText="Your age" />
+    <Textarea name="description" labelText="Your descripton" />
   </Form>
 )
 

@@ -1,0 +1,45 @@
+.Textarea-wrapper {
+	position: relative;
+	visibility: hidden;
+	height: 0;
+	transition: visibility 0s 0.4s, height 0s 0.4s;
+}
+
+.Textarea-wrapper.visible {
+  visibility: visible;
+	height: auto;
+	transition: none;
+}
+
+.field {
+  display: block;
+	border: none;
+  background: transparent;
+  outline: none;
+	opacity: 0;
+	transition: opacity 0.3s;
+}
+
+.Textarea-wrapper span {
+  display: block;
+  overflow: hidden;
+}
+
+.Textarea-wrapper label {
+  display: block;
+	transition: transform 0.4s;
+	transform: translateY(-100%);
+}
+
+.visible label {
+	transition: none;
+	transform: translateY(0);
+}
+
+.isInTransition .visible label {
+  animation: moveUpFromDown 0.4s both;
+}
+
+.visible .field {
+  opacity: 1;
+}
